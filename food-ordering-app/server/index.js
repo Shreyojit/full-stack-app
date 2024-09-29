@@ -6,6 +6,7 @@ import cors from "cors";
 import restaurantRoutes from './routes/restaurantRoutes.js';
 import authRoutes from './routes/authRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import foodRoutes from './routes/foodRoutes.js'
 
 const app = express();
 dotenv.config();
@@ -31,6 +32,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use("/api/user",userRoutes)
+app.use("/api/foods",foodRoutes)
+
 
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;

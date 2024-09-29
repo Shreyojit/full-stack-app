@@ -15,8 +15,24 @@ const AddressSchema = new mongoose.Schema({
     postalCode: { type: String, required: true },
     default: { type: Boolean, default: false },
     deliveryInstructions: { type: String },
-    latitude: { type: Number, required: true },
-    longitude: { type: Number, required: true }
+    latitude: { type: Number, required: true },  // These are useful, but won't be used directly for geospatial queries
+    longitude: { type: Number, required: true },
+
+    // GeoJSON location field to support geospatial queries
+    location: {
+        type: {
+            type: String,
+            enum: ['Point'],  // GeoJSON requires 'Point' type for location
+            required: true,
+        },
+        coordinates: {
+            type: [Number],  // [longitude, latitude]
+            required: true,
+        }
+    }
 }, { timestamps: true });
+
+// Create a geospatial index on the `location` field
+AddressSchema.index({ location: "2dsphere" });
 
 export default mongoose.model('Address', AddressSchema);
